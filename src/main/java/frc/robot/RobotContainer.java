@@ -104,14 +104,23 @@ public class RobotContainer {
                 Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
 
                 drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-
+                
+                // Control lift movement
                 driverXbox.b().whileTrue(new LowerLiftCommand(lift));
                 driverXbox.x().whileTrue(new RaiseLiftCommand(lift));
+
+                // Zero gyroscope
                 driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+
+                // Placeholders
                 driverXbox.start().whileTrue(Commands.none());
                 driverXbox.back().whileTrue(Commands.none());
-                driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
                 driverXbox.rightBumper().onTrue(Commands.none());
+
+                // Drive lock
+                driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+
+                // Drive to pose
                 driverXbox.y().onTrue(drivebase.driveToPose(new Pose2d(5.0, 0.0, Rotation2d.fromDegrees(0))));
         }
 
