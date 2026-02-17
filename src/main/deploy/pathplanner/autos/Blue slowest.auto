@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Example Path"
+            "pathName": "Starting point left"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Copy of Example Path"
+            "pathName": "Getting fuel right"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Fuel right to shooting"
           }
         }
       ]
