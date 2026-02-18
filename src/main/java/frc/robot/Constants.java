@@ -48,8 +48,8 @@ public final class Constants {
     
     // We will need to change these later
     public static final double kPercentOutputSorting = 0.30;
-    public static final double kPercentOutputPassthrough = 0.30;
-    public static final double kPercentOutputShooter = 0.30;
+    public static final double kPercentOutputPassthrough = 0.20;
+    public static final double kPercentOutputShooter = 0.50;
   }
 
   public static final class AutoConstants {

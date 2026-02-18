@@ -13,33 +13,33 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooting extends SubsystemBase {
     // Define motors
-    private final SparkMax sortingMotor = new SparkMax(ShootingConstants.kSortingSparkMaxPort, MotorType.kBrushed);
+    //private final SparkMax sortingMotor = new SparkMax(ShootingConstants.kSortingSparkMaxPort, MotorType.kBrushed);
     private final SparkMax passthroughMotor = new SparkMax(ShootingConstants.kPassthroughSparkMaxPort, MotorType.kBrushed);
     private final SparkMax shooterMotor = new SparkMax(ShootingConstants.kShooterSparkMaxPort, MotorType.kBrushed);
 
     // Motor configurations
-    private final SparkMaxConfig sortingMotorConfig = new SparkMaxConfig();
+    //private final SparkMaxConfig sortingMotorConfig = new SparkMaxConfig();
     private final SparkMaxConfig passthroughMotorConfig = new SparkMaxConfig();
     private final SparkMaxConfig shooterMotorConfig = new SparkMaxConfig();
     public Shooting() {
-        sortingMotorConfig.inverted(false).idleMode(IdleMode.kBrake);
+        //sortingMotorConfig.inverted(false).idleMode(IdleMode.kBrake);
         passthroughMotorConfig.inverted(false).idleMode(IdleMode.kBrake);
         shooterMotorConfig.inverted(false).idleMode(IdleMode.kBrake);
 
-        sortingMotor.configure(sortingMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        //sortingMotor.configure(sortingMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         passthroughMotor.configure(passthroughMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         shooterMotor.configure(shooterMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     // Methods to control both motors
     public void start() {
-        sortingMotor.set(ShootingConstants.kPercentOutputSorting);
+        //sortingMotor.set(ShootingConstants.kPercentOutputSorting);
         passthroughMotor.set(ShootingConstants.kPercentOutputPassthrough);
         shooterMotor.set(ShootingConstants.kPercentOutputShooter);
     }
 
     public void stop() {
-        sortingMotor.set(0);
+        //sortingMotor.set(0);
         passthroughMotor.set(0);
         shooterMotor.set(0);
     }
