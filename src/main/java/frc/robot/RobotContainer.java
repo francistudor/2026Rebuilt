@@ -125,10 +125,8 @@ public class RobotContainer {
                 driverXbox.leftBumper().whileTrue(new IntakeReverseCommand(intake));
 
                 // Hold right trigger for intake drop
-                driverXbox.a().whileTrue(new IntakeDropCommand(intakeDrop));
-          
-                // Drive to pose
-                
+                driverXbox.x().whileTrue(new IntakeDropCommand(intakeDrop));
+
                 // Shooting command
                 driverXbox.b().whileTrue(new Shoot(shooting));
 
