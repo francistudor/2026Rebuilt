@@ -13,9 +13,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooting extends SubsystemBase {
     // Define motors
-    private final SparkMax sortingMotor = new SparkMax(ShootingConstants.kSortingSparkMaxPort, MotorType.kBrushed);
-    private final SparkMax passthroughMotor = new SparkMax(ShootingConstants.kPassthroughSparkMaxPort, MotorType.kBrushed);
-    private final SparkMax shooterMotor = new SparkMax(ShootingConstants.kShooterSparkMaxPort, MotorType.kBrushed);
+    private final SparkMax sortingMotor = new SparkMax(ShootingConstants.kSortingSparkMaxPort, MotorType.kBrushless);
+    private final SparkMax passthroughMotor = new SparkMax(ShootingConstants.kPassthroughSparkMaxPort, MotorType.kBrushless);
+    private final SparkMax shooterMotor = new SparkMax(ShootingConstants.kShooterSparkMaxPort, MotorType.kBrushless);
 
     // Motor configurations
     private final SparkMaxConfig sortingMotorConfig = new SparkMaxConfig();
