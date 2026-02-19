@@ -40,6 +40,18 @@ public final class Constants {
     public static final double kVoltageLift = 11.5;
   }
 
+  public static final class ShootingConstants {
+    // We will need to change these later
+    public static final int kSortingSparkMaxPort = 12;
+    public static final int kPassthroughSparkMaxPort = 11;
+    public static final int kShooterSparkMaxPort = 9;
+    
+    // We will need to change these later
+    public static final double kPercentOutputSorting = -0.10;
+    public static final double kPercentOutputPassthrough = -0.25;
+    public static final double kPercentOutputShooter = -1.00;
+  }
+
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 3;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
