@@ -38,7 +38,7 @@ public class Shooting extends SubsystemBase {
         System.out.println("Shooter motor value: " + shooterMotor.get());
 
         Runnable speedUp = () -> {
-            while (shooterMotor.get() > IntakeConstants.kPercentOutputIntake) {
+            while (shooterMotor.get() > ShootingConstants.kPercentOutputShooter) {
                 shooterMotor.set(shooterMotor.get() - 0.05);
                 // Wait
                 try {
@@ -47,7 +47,7 @@ public class Shooting extends SubsystemBase {
                     Thread.currentThread().interrupt(); // Restore interrupted status
                 }
             }
-            shooterMotor.set(IntakeConstants.kPercentOutputIntake);
+            shooterMotor.set(ShootingConstants.kPercentOutputShooter);
             sortingMotor.set(ShootingConstants.kPercentOutputSorting);
             passthroughMotor.set(ShootingConstants.kPercentOutputPassthrough);
         };
