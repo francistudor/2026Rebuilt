@@ -8,7 +8,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import frc.robot.Constants.IntakeConstants;
-
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
@@ -18,56 +18,30 @@ public class Intake extends SubsystemBase {
     // Motor configurations
     private final SparkMaxConfig intakeMotorConfig = new SparkMaxConfig();
 
+    // Smooth smmooooth
+    private final SlewRateLimiter rateLimiter = new SlewRateLimiter(IntakeConstants.kIntakeAccel);
+    private double targetSpeed = 0.0;
+
     public Intake() {
         intakeMotorConfig.inverted(false).idleMode(IdleMode.kBrake);
         intakeMotor.configure(intakeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     public void start() {
-        // Speed up the motor slowly & Log the value of shooter motor
-        System.out.println("Intake motor value: " + intakeMotor.get());
+        targetSpeed = IntakeConstants.kPercentOutputIntake;
+    }
 
-        Runnable speedUp = () -> {
-            while (intakeMotor.get() < IntakeConstants.kPercentOutputIntake) {
-                intakeMotor.set(intakeMotor.get() + 0.05);
-                // Wait
-                try {
-                    Thread.sleep(50); // Sleep for 50 milliseconds
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt(); // Restore interrupted status
-                }
-            }
-            intakeMotor.set(IntakeConstants.kPercentOutputIntake);
-        };
-
-        // Speed up the motor in a separate thread to avoid blocking the main thread
-        Thread speedUpThread = new Thread(speedUp);
-        speedUpThread.start();
+    @Override
+    public void periodic() {
+        intakeMotor.set(rateLimiter.calculate(targetSpeed));
     }
 
     public void reverse() {
+        targetSpeed = -IntakeConstants.kPercentOutputIntake;
         intakeMotor.set(-IntakeConstants.kPercentOutputIntake);
     }
 
     public void stop() {
-        // Slow down the motor slowly & Log the value of intake motor
-        System.out.println("Intake motor value: " + intakeMotor.get());
-
-        Runnable slowDown = () -> {
-            while (Math.abs(intakeMotor.get()) > 0.05) {
-                intakeMotor.set(intakeMotor.get() + ((intakeMotor.get() < 0) ? 0.05 : -0.05));
-                // Wait
-                try {
-                    Thread.sleep(50); // Sleep for 50 milliseconds
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt(); // Restore interrupted status
-                }
-            }
-            intakeMotor.set(0);
-        };
-
-        // Slow down the motor in a separate thread to avoid blocking the main thread
-        Thread slowThread = new Thread(slowDown);
-        slowThread.start();
+        targetSpeed = 0.0;
     }
 }
