@@ -25,6 +25,7 @@ import frc.robot.commands.modules.shooting.SortAndPass;
 import frc.robot.commands.modules.shooting.SortAndPassReverse;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -33,11 +34,13 @@ import swervelib.SwerveInputStream;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 import java.util.function.DoubleSupplier;
 
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeDrop;
 import frc.robot.subsystems.Shooting;
+import frc.robot.subsystems.Vision.Aim;
 import frc.robot.subsystems.Vision.Position;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -68,7 +71,7 @@ public class RobotContainer {
         private final Intake intake = new Intake();
         private final IntakeDrop intakeDrop = new IntakeDrop();
         private final Shooting shooting = new Shooting();
-
+        private final Aim aim = new Aim();
         /**
          * Converts driver input into a field-relative ChassisSpeeds that is controlled
          * by angular velocity.
@@ -146,9 +149,11 @@ public class RobotContainer {
                 // Shooting commands without shooting (pov = dpad btw)
                 driverXbox.povUp().whileTrue(new SortAndPass(shooting));
                 driverXbox.povDown().whileTrue(new SortAndPassReverse(shooting));
-
+                
                 //drive to pose
-                driverXbox.y().onTrue(drivebase.driveToClosestPose());
+                driverXbox.y().onTrue(
+                        Commands.defer(() -> drivebase.AimAndDrive(), Set.of(drivebase))
+                        );
                 driverXbox.povRight().onTrue(Commands.runOnce(() -> drivebase.getCurrentCommand().cancel()));
         }
 
