@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Vision.Position;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.studica.frc.AHRS;
 
@@ -23,7 +24,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-
+  private Position position;
   private Timer disabledTimer;
 
   AHRS navx = new AHRS(AHRS.NavXComType.kMXP_SPI);
@@ -127,11 +128,13 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     } else {
       CommandScheduler.getInstance().cancelAll();
     }
+    m_robotContainer.getSwerve().resetHasResetPose();
   }
 
   /** This function is called periodically during operator control. */

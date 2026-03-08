@@ -282,6 +282,10 @@ public class SwerveSubsystem extends SubsystemBase {
         swerveDrive.setMotorIdleMode(brake);
     }
 
+public void resetHasResetPose() {
+    position.resetHasResetPose();
+}
+
     /**
      * Gets the current pose (position and rotation) of the robot, as reported by odometry.
      *
@@ -352,7 +356,7 @@ public class SwerveSubsystem extends SubsystemBase {
     {
     // Create the constraints to use while pathfinding
         PathConstraints constraints = new PathConstraints(
-            0.5, 0.5,
+            1, 1,
             0.5, Units.degreesToRadians(720));
 
     // Since AutoBuilder is configured, we can use it to build pathfinding commands

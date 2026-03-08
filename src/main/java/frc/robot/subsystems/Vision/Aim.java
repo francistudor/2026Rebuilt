@@ -92,7 +92,7 @@ public class Aim extends SubsystemBase {
 
         System.out.println("[AIM] Distance to tag: " + distToTag);
 
-        double shootingDistance = 2.0; // desired distance from tag in meters
+        double shootingDistance = 1.5; // desired distance from tag in meters
 
         // Unit vector pointing from tag back toward the robot (away from tower)
         Translation2d directionToTag = toTag.div(distToTag);
