@@ -1,7 +1,11 @@
 package frc.robot.subsystems.Vision;
 
+import com.pathplanner.lib.util.FlippingUtil;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import frc.robot.LimelightHelpers;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,8 +16,11 @@ import swervelib.SwerveDrive;
 public class Position extends SubsystemBase {
     private final SwerveDrive swerveDrive;
 
-    public static boolean doRejectUpdate = false;
-    public static boolean twoTags = false;
+    private boolean hasResetPose = false;
+
+    public void resetHasResetPose() {
+        hasResetPose = false;
+    }
 
     public Position(SwerveDrive swerveDrive) {
         this.swerveDrive = swerveDrive;
@@ -33,6 +40,7 @@ swerveDrive.updateOdometry();
     LimelightHelpers.PoseEstimate mt2 =
         LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
 
+        SmartDashboard.putBoolean("Vision/FirstTag", hasResetPose);
     // Log Limelight data
     boolean hasValidTags = mt2 != null && mt2.tagCount > 0;
     SmartDashboard.putBoolean("Vision/Has Valid Tags", hasValidTags);
@@ -59,6 +67,27 @@ swerveDrive.updateOdometry();
     SmartDashboard.putNumber("Vision/Pose Rotation", estimatedPose.getRotation().getDegrees());
     SmartDashboard.putNumber("Vision/Timestamp",     mt2.timestampSeconds);
     SmartDashboard.putNumber("Vision/Avg Tag Dist",  mt2.avgTagDist);
+    
+    if (!hasResetPose) {
+        LimelightHelpers.PoseEstimate mt1 = 
+            LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+
+    if (mt1 != null && mt1.tagCount > 0 && mt1.rawFiducials[0].ambiguity < 0.7) {
+
+            Pose2d pose = FlippingUtil.flipFieldPose(mt1.pose);
+            
+            SmartDashboard.putNumber("Vision/First Pose X",        pose.getX());
+            SmartDashboard.putNumber("Vision/First Pose Y",        pose.getY());
+            SmartDashboard.putNumber("Vision/First Pose Rotation", pose.getRotation().getDegrees());
+
+            swerveDrive.setGyro(new Rotation3d(0, 0, pose.getRotation().getRadians()));
+
+
+            hasResetPose = true;
+            
+        }
+        return;
+    }
 
     // Apply vision measurement
     swerveDrive.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
